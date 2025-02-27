@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Pochaevsk&display=swap');
+
+.container {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    font-family: "Pochaevsk", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+a{
+    position: relative;
+    bottom: 40px;
+    font-size: 14px;
+    text-decoration: none;
+    font-family: "Pochaevsk", system-ui;
+    font-weight: lighter;
+    font-style: normal;
+    color: #333;
+  }
+  
+  .content {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+  }
+  
+  .photo-showcase {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    max-width: 400px;
+    text-align: center;
+    font-family: "Pochaevsk", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .photo-container {
+    display: grid;
+    gap: 10px;
+    background-color: #ffffff;
+  }
+  
+  .captured-image {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .camera-controls {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    max-width: 500px;
+    text-align: center;
+    font-family: "Pochaevsk", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .webcam {
+    width: 100%;
+    border-radius: 6px;
+    transform: scaleX(-1);
+  }
+  
+  .message {
+    text-align: center;
+    color: #666;
+  }
+  
+  .buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .capture-button,
+  .retake-button,
+  .download-button {
+    background-color: #52616B;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    width: auto;
+  }
+  
+  .retake-button {
+    background-color: #888;
+  }
+
+  .capture-button:hover,
+  .download-button:hover{
+    background-color: #455966;
+  }
+
+  .retake-button:hover{
+    background-color: #696363;
+  }
+
+
+
+  /* Ensure side-by-side layout on all screen sizes */
+  @media (max-width: 768px) {
+    .content {
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: center;
+    }
+    .photo-showcase, .camera-controls {
+      width: 45%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .photo-showcase, .camera-controls {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
