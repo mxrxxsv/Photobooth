@@ -17,44 +17,57 @@ function Home() {
     const downloadImages = () => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-      const imageWidth = 450;
-      const imageHeight = 400;
-      const padding = 20;
-      const topPadding = 60; 
-      const borderRadius = 20;
-      const frameColor = "#ffffff";
-      
-      canvas.width = imageWidth + padding * 2;
-      canvas.height = images.length * (imageHeight + padding) + topPadding + padding;
-      
-      ctx.fillStyle = frameColor;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw Heart Shape at the Center Top
-      ctx.fillStyle = "#000000"; 
-      ctx.font = "40px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("♡", canvas.width / 2, topPadding / 2);
-      
+    
+      if (images.length === 0) {
+        console.error("No images to download!");
+        return;
+      }
+
+      let loadedImages = [];
+      let imagesLoaded = 0;
+    
       images.forEach((imgSrc, index) => {
         const img = new Image();
         img.src = imgSrc;
         img.onload = () => {
-          const x = padding;
-          const y = topPadding + padding + index * (imageHeight + padding);
-          ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(x + borderRadius, y);
-          ctx.arcTo(x + imageWidth, y, x + imageWidth, y + imageHeight, borderRadius);
-          ctx.arcTo(x + imageWidth, y + imageHeight, x, y + imageHeight, borderRadius);
-          ctx.arcTo(x, y + imageHeight, x, y, borderRadius);
-          ctx.arcTo(x, y, x + imageWidth, y, borderRadius);
-          ctx.closePath();
-          ctx.clip();
-          ctx.drawImage(img, x, y, imageWidth, imageHeight);
-          ctx.restore();
-          
-          if (index === images.length - 1) {
+          loadedImages[index] = img;
+          imagesLoaded++;
+    
+          if (imagesLoaded === images.length) {
+            const imageWidth = loadedImages[0].naturalWidth || 300;
+            const imageHeight = loadedImages[0].naturalHeight || 400;
+            const padding = 20;
+            const topPadding = 60;
+            const borderRadius = 20;
+            const frameColor = "#ffffff";
+    
+            canvas.width = imageWidth + padding * 2;
+            canvas.height = images.length * (imageHeight + padding) + topPadding + padding;
+    
+            ctx.fillStyle = frameColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#000000";
+            ctx.font = "40px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("♡", canvas.width / 2, topPadding /1);
+    
+            loadedImages.forEach((img, idx) => {
+              const x = padding;
+              const y = topPadding + padding + idx * (imageHeight + padding);
+              ctx.save();
+              ctx.beginPath();
+              ctx.moveTo(x + borderRadius, y);
+              ctx.arcTo(x + imageWidth, y, x + imageWidth, y + imageHeight, borderRadius);
+              ctx.arcTo(x + imageWidth, y + imageHeight, x, y + imageHeight, borderRadius);
+              ctx.arcTo(x, y + imageHeight, x, y, borderRadius);
+              ctx.arcTo(x, y, x + imageWidth, y, borderRadius);
+              ctx.closePath();
+              ctx.clip();
+              ctx.drawImage(img, x, y, imageWidth, imageHeight);
+              ctx.restore();
+            });
+    
             setTimeout(() => {
               const link = document.createElement("a");
               link.href = canvas.toDataURL("image/png");
@@ -67,6 +80,7 @@ function Home() {
         };
       });
     };
+    
   
     return (
       <div className="container">
