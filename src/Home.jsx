@@ -15,29 +15,57 @@ function Home() {
     };
   
     const downloadImages = () => {
-      const container = document.getElementById("photo-container");
-    
-      if (!container) {
-        console.error("Photo container not found!");
-        return;
-      }
-    
-      setTimeout(() => {
-        html2canvas(container, {
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#ffffff", 
-          scale: 2, 
-          logging: true,
-        }).then((canvas) => {
-          const link = document.createElement("a");
-          link.href = canvas.toDataURL("image/png");
-          link.download = "photobooth-strip.png";
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }).catch((error) => console.error("Error capturing image:", error));
-      }, 1000);
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const imageWidth = 450;
+      const imageHeight = 400;
+      const padding = 20;
+      const topPadding = 60; 
+      const borderRadius = 20;
+      const frameColor = "#ffffff";
+      
+      canvas.width = imageWidth + padding * 2;
+      canvas.height = images.length * (imageHeight + padding) + topPadding + padding;
+      
+      ctx.fillStyle = frameColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw Heart Shape at the Center Top
+      ctx.fillStyle = "#000000"; 
+      ctx.font = "40px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("♡", canvas.width / 2, topPadding / 2);
+      
+      images.forEach((imgSrc, index) => {
+        const img = new Image();
+        img.src = imgSrc;
+        img.onload = () => {
+          const x = padding;
+          const y = topPadding + padding + index * (imageHeight + padding);
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(x + borderRadius, y);
+          ctx.arcTo(x + imageWidth, y, x + imageWidth, y + imageHeight, borderRadius);
+          ctx.arcTo(x + imageWidth, y + imageHeight, x, y + imageHeight, borderRadius);
+          ctx.arcTo(x, y + imageHeight, x, y, borderRadius);
+          ctx.arcTo(x, y, x + imageWidth, y, borderRadius);
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(img, x, y, imageWidth, imageHeight);
+          ctx.restore();
+          
+          if (index === images.length - 1) {
+            setTimeout(() => {
+              const link = document.createElement("a");
+              link.href = canvas.toDataURL("image/png");
+              link.download = "photo-strip.png";
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }, 500);
+          }
+        };
+      });
     };
   
     return (
@@ -53,7 +81,6 @@ function Home() {
                 <img key={index} src={img} alt={`Captured ${index + 1}`} className="captured-image" />
               ))}
             </div>
-            {/* <p>{images.length} / 3 Taken</p> */}
           </div>
           
           {/* Camera & Controls */}
@@ -82,7 +109,6 @@ function Home() {
           </div>
         </div>
       </div>
-      
   );
 }
 
